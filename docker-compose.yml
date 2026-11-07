@@ -1,0 +1,17 @@
+#It's a file that tells Docker: "here are the services I need running, and here's how to configure each one." Instead of typing a long docker run command with 10 flags, you describe everything in this file and run docker-compose up.
+version: '3.8'
+
+services: #the containers you want to run
+ my-service-name:
+  image: postgres:16
+  ports: #"my laptop's port 5432 connects to the container's port 5432." This is how your Spring Boot app (running on your laptop) talks to Postgres (running inside Docker).
+   - "5433:5432"
+  environment:
+   POSTGRES_DB: fluxgrid
+   POSTGRES_USER: admin
+   POSTGRES_PASSWORD: admin123
+  volumes: #persistent storage that survives even when you delete the container
+   - fluxgrid_data:/var/lib/postgresql/data
+
+volumes:
+ fluxgrid_data:
